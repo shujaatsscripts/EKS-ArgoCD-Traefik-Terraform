@@ -1,0 +1,8 @@
+Thank you for taking interest. To clarify, this is a small consultancy and we do work for currently 2 different clients. I have the ability to scale but I am working on building out a reliable team first. I hired two people that weren’t really resourceful so I’m trying to “shift left” more and focus more on the hiring process.
+
+For the technical exercise, you need to demonstrate that you can:
+* create a basic EKS cluster using the EKS Blueprints TF module: https://github.com/aws-ia/terraform-aws-eks-blueprints.
+    * Two node groups, one amd64, the other arm64
+* Deploy a helm chart for a service like LinkerD or HashiCorp Vault
+* Deploy an application with ArgoCD
+* Use Traefik for Ingress
