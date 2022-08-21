@@ -24,7 +24,7 @@ data "aws_eks_cluster_auth" "this" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  name   = "EKS-ArgoCD"
+  name   = "eks-argocd"
   region = "us-east-2"
 
   vpc_cidr = "10.0.0.0/16"
