@@ -120,6 +120,7 @@ module "eks_blueprints_kubernetes_addons" {
 
   tags = local.tags
 }
+
 #Application Deployment using helm
 
 resource "kubernetes_namespace" "hashicrop_namespace" {
@@ -135,6 +136,32 @@ resource "helm_release" "hashicrop_vault" {
   chart      = "vault"
   timeout = 600
   depends_on = [kubernetes_namespace.hashicrop_namespace]
+}
+
+#Using traefik as ingress for team-riker app
+
+resource "kubernetes_ingress_v1" "traefik_ingress" {
+  metadata {
+    name = "riker-traefik-ingress"
+    namespace = "team-riker"
+  }
+  spec {
+    rule {
+      http {
+        path {
+          backend {
+            service {
+              name = "guestbook-ui"
+              port {
+                number = 80
+              }
+            }
+          }
+          path = "/"
+        }
+      }
+    }
+  }
 }
 
 #---------------------------------------------------------------
