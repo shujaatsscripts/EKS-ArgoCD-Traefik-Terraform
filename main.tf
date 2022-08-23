@@ -120,6 +120,22 @@ module "eks_blueprints_kubernetes_addons" {
 
   tags = local.tags
 }
+#Application Deployment using helm
+
+resource "kubernetes_namespace" "hashicrop_namespace" {
+  metadata {
+    name = "hashicorp"
+  }
+}
+
+resource "helm_release" "hashicrop_vault" {
+  name       = "hashicropvault"
+  namespace  = "hashicorp"
+  repository = "https://helm.releases.hashicorp.com"
+  chart      = "vault"
+  timeout = 600
+  depends_on = [kubernetes_namespace.hashicrop_namespace]
+}
 
 #---------------------------------------------------------------
 # ArgoCD Admin Password credentials with Secrets Manager
