@@ -47,14 +47,22 @@ module "eks_blueprints" {
   cluster_version = "1.22"
 
   vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.public_subnets
+  private_subnet_ids = module.vpc.private_subnets
 
   managed_node_groups = {
-    md_t3a = {
-      node_group_name = "managed-ondemand"
+    md_amd = {
+      node_group_name = "managed-ondemand-am"
       instance_types  = ["t3a.micro"]
       min_size        = 1
-      subnet_ids      = module.vpc.public_subnets
+      desired_size    = 1
+      subnet_ids      = module.vpc.private_subnets
+    }
+    md_arm = {
+      node_group_name = "managed-ondemand-arm"
+      instance_types  = ["t4g.micro"]
+      min_size        = 1
+      desired_size    = 1
+      subnet_ids      = module.vpc.private_subnets
     }
   }
 
@@ -99,17 +107,13 @@ module "eks_blueprints_kubernetes_addons" {
   enable_amazon_eks_kube_proxy = true
 
   # Add-ons
-  enable_aws_for_fluentbit  = true
   enable_cert_manager       = true
   enable_cluster_autoscaler = true
-  enable_karpenter          = true
-  enable_keda               = true
   enable_metrics_server     = true
   enable_prometheus         = true
   enable_traefik            = true
-  enable_vpa                = true
-  enable_yunikorn           = true
   enable_argo_rollouts      = true
+  enable_vault = true
   enable_aws_load_balancer_controller = true
 
 
