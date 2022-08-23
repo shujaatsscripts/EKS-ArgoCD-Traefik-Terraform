@@ -63,6 +63,7 @@ module "eks_blueprints" {
       min_size        = var.armnodemin
       desired_size    = var.armnodedesired
       subnet_ids      = module.vpc.private_subnets
+      ami_type        = "AL2_ARM_64"  
     }
   }
 
