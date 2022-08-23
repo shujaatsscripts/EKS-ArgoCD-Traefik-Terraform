@@ -52,16 +52,16 @@ module "eks_blueprints" {
   managed_node_groups = {
     md_amd = {
       node_group_name = "managed-ondemand-am"
-      instance_types  = ["t3a.micro"]
-      min_size        = 1
-      desired_size    = 1
+      instance_types  = [var.amdnodetype]
+      min_size        = var.amdnodemin
+      desired_size    = var.amdnodedesired
       subnet_ids      = module.vpc.private_subnets
     }
     md_arm = {
       node_group_name = "managed-ondemand-arm"
-      instance_types  = ["t4g.micro"]
-      min_size        = 1
-      desired_size    = 1
+      instance_types  = [var.armnodetype]
+      min_size        = var.armnodemin
+      desired_size    = var.armnodedesired
       subnet_ids      = module.vpc.private_subnets
     }
   }
@@ -109,11 +109,11 @@ module "eks_blueprints_kubernetes_addons" {
   # Add-ons
   enable_cert_manager       = true
   enable_cluster_autoscaler = true
-  enable_metrics_server     = true
-  enable_prometheus         = true
-  enable_traefik            = true
-  enable_argo_rollouts      = true
-  enable_vault = true
+  enable_metrics_server     = var.metrics_server
+  enable_prometheus         = var.prometheus
+  enable_traefik            = var.traefik
+  enable_argo_rollouts      = var.argo_rollouts
+  enable_vault = var.vault
   enable_aws_load_balancer_controller = true
 
 
