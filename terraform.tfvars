@@ -1,13 +1,13 @@
 amdnodetype="t3a.medium"
-amdnodedesired=2
+amdnodedesired=1
 amdnodemin=1
 armnodetype="t4g.medium"
-armnodedesired=2
+armnodedesired=1
 armnodemin=1
 
 #Add-on
-prometheus = true
+prometheus = false
 traefik = true
 argo_rollouts = true
-vault = true
-metrics_server = true
+vault = false
+metrics_server = false
