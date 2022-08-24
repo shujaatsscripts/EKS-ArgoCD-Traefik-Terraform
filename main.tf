@@ -51,7 +51,7 @@ module "eks_blueprints" {
 
   managed_node_groups = {
     md_amd = {
-      node_group_name = "managed-ondemand-am"
+      node_group_name = "managed-ondemand-amd"
       instance_types  = [var.amdnodetype]
       min_size        = var.amdnodemin
       desired_size    = var.amdnodedesired
@@ -72,14 +72,11 @@ module "eks_blueprints" {
 
 module "eks_blueprints_kubernetes_addons" {
   source = "./modules/modules/kubernetes-addons"
-
   eks_cluster_id       = module.eks_blueprints.eks_cluster_id
   eks_cluster_endpoint = module.eks_blueprints.eks_cluster_endpoint
   eks_oidc_provider    = module.eks_blueprints.oidc_provider
   eks_cluster_version  = module.eks_blueprints.eks_cluster_version
-
   enable_argocd = true
-  # This example shows how to set default ArgoCD Admin Password using SecretsManager with Helm Chart set_sensitive values.
   argocd_helm_config = {
     set_sensitive = [
       {
@@ -88,8 +85,7 @@ module "eks_blueprints_kubernetes_addons" {
       }
     ]
   }
-
-  argocd_manage_add_ons = true # Indicates that ArgoCD is responsible for managing/deploying add-ons
+  argocd_manage_add_ons = true 
   argocd_applications = {
     addons = {
       path               = "chart"
@@ -102,12 +98,8 @@ module "eks_blueprints_kubernetes_addons" {
       add_on_application = false
     }
   }
-
- # EKS Managed Add-ons
   enable_amazon_eks_coredns    = true
   enable_amazon_eks_kube_proxy = true
-
-  # Add-ons
   enable_cert_manager       = true
   enable_cluster_autoscaler = true
   enable_metrics_server     = var.metrics_server
@@ -116,8 +108,6 @@ module "eks_blueprints_kubernetes_addons" {
   enable_argo_rollouts      = var.argo_rollouts
   enable_vault = var.vault
   enable_aws_load_balancer_controller = true
-
-
   tags = local.tags
 }
 
@@ -174,7 +164,6 @@ resource "random_password" "argocd" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-#tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "arogcd" {
   name                    = "argocd"
   recovery_window_in_days = 0 # Set to zero for this example to force delete during Terraform destroy
